@@ -26,7 +26,6 @@
 package cn.flashzxi.pptbackend.util;
 
 import java.io.Serializable;
-import javafx.beans.NamedArg;
 
 /**
  * <p>A convenience class to represent name-value pairs.</p>

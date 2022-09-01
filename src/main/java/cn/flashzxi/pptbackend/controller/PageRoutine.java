@@ -25,7 +25,7 @@ public class PageRoutine {
 
     PageRoutine(){
 //        startPath = "C:/";
-        startPath = "/home/ubuntu/www/ppt/ppt";
+        startPath = "/home/ubuntu/www/ppt/pptFont/build/ppts";
         lowestPath = Paths.get(startPath);
     }
 

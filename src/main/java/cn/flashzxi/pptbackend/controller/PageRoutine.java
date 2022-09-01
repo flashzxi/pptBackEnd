@@ -1,6 +1,6 @@
 package cn.flashzxi.pptbackend.controller;
 
-import javafx.util.Pair;
+import cn.flashzxi.pptbackend.util.Pair;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -20,16 +20,19 @@ import java.util.stream.Collectors;
 @RequestMapping()
 public class PageRoutine {
 
+    private String startPath;
     private final Path lowestPath;
 
     PageRoutine(){
-        lowestPath = Paths.get("/home/ubuntu/www/ppt/ppt");
+//        startPath = "C:/";
+        startPath = "/home/ubuntu/www/ppt/ppt";
+        lowestPath = Paths.get(startPath);
     }
 
     @ResponseBody
     @GetMapping
     List<Pair<String, String>> getDirectoriesAndPPTNames(@RequestParam(required = false) String path){
-        Path root = Paths.get("/home/ubuntu/www/ppt/ppt");
+        Path root = Paths.get(startPath);
         if(!Objects.isNull(path)){
             root = root.resolve(path);
         }

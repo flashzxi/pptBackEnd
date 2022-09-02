@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Stack;
 import java.util.stream.Collectors;
 
 @Controller
@@ -25,18 +26,41 @@ public class PageRoutine {
     private final Path lowestPath;
 
     PageRoutine(){
-//        startPath = "C:/";
+//        startPath = "C:/maven";
         startPath = "/home/ubuntu/www/ppt/pptFont/build/ppts";
         lowestPath = Paths.get(startPath);
+    }
+
+    private String normalize(String path){
+        path = startPath + "/" + path;
+        String[] split = path.split("/");
+        Stack<String> pathStack = new Stack<>();
+        for (String s : split) {
+            if (s.equals(".")) {
+            } else if (s.equals("..")) {
+                pathStack.pop();
+            } else {
+                pathStack.push(s);
+            }
+        }
+        List<String> collect = new ArrayList<>(pathStack);
+        if(collect.size()!=0){
+            StringBuilder absolutePath = new StringBuilder();
+            for(String s: collect){
+                absolutePath.append("/").append(s);
+            }
+            return absolutePath.toString().substring(1);
+        }else{
+            return "noExistPath";
+        }
     }
 
     @ResponseBody
     @GetMapping
     RespondFormat<List<Pair<String, String>>> getDirectoriesAndPPTNames(@RequestParam(required = false) String path){
         Path root = Paths.get(startPath);
-        if(!Objects.isNull(path)){
-            root = root.resolve(path);
-        }
+        path = normalize(path);
+        root = root.resolve(path);
         if(!root.startsWith(lowestPath)){
             return new RespondFormat<>(false,null,"already lowest layer");
         }

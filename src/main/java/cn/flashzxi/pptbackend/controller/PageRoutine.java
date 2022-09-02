@@ -66,13 +66,14 @@ public class PageRoutine {
         }
 
         File file = root.toFile();
-        if(!file.exists()){
+        if(!file.exists() || file.isHidden()){
             return new RespondFormat<>(false,null,"file or directory doesn't exist");
         }else {
             File[] files = file.listFiles();
             assert files != null;
             return new RespondFormat<>(Arrays.stream(files).filter(fileOrDir ->
-                    fileOrDir.isDirectory() || (fileOrDir.isFile() && fileOrDir.getName().endsWith(".html"))
+                    (fileOrDir.isDirectory() && !fileOrDir.isHidden())
+                            || (fileOrDir.isFile() && fileOrDir.getName().endsWith(".html"))
             ).map(fileOrDir -> {
                 if (fileOrDir.isDirectory()) {
                     return new Pair<>(fileOrDir.getName(), "dir");

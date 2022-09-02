@@ -1,6 +1,7 @@
 package cn.flashzxi.pptbackend.controller;
 
 import cn.flashzxi.pptbackend.util.Pair;
+import cn.flashzxi.pptbackend.util.RespondFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,22 +32,22 @@ public class PageRoutine {
 
     @ResponseBody
     @GetMapping
-    List<Pair<String, String>> getDirectoriesAndPPTNames(@RequestParam(required = false) String path){
+    RespondFormat<List<Pair<String, String>>> getDirectoriesAndPPTNames(@RequestParam(required = false) String path){
         Path root = Paths.get(startPath);
         if(!Objects.isNull(path)){
             root = root.resolve(path);
         }
         if(!root.startsWith(lowestPath)){
-            return new ArrayList<>();
+            return new RespondFormat<>(false,null,"already lowest layer");
         }
 
         File file = root.toFile();
         if(!file.exists()){
-            return new ArrayList<>();
+            return new RespondFormat<>(false,null,"file or directory doesn't exist");
         }else {
             File[] files = file.listFiles();
             assert files != null;
-            return Arrays.stream(files).filter(fileOrDir ->
+            return new RespondFormat<>(Arrays.stream(files).filter(fileOrDir ->
                     fileOrDir.isDirectory() || (fileOrDir.isFile() && fileOrDir.getName().endsWith(".html"))
             ).map(fileOrDir -> {
                 if (fileOrDir.isDirectory()) {
@@ -54,7 +55,7 @@ public class PageRoutine {
                 } else {
                     return new Pair<>(fileOrDir.getName(), "file");
                 }
-            }).collect(Collectors.toList());
+            }).collect(Collectors.toList()));
         }
     }
 

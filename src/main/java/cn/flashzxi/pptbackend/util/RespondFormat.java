@@ -12,6 +12,18 @@ public class RespondFormat<T> {
         error = null;
     }
 
+    public T getData() {
+        return data;
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public String getError() {
+        return error;
+    }
+
     public RespondFormat(boolean success, T data){
         this.success = success;
         this.data = data;
